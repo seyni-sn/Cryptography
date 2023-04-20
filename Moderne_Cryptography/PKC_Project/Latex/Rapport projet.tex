@@ -1,0 +1,827 @@
+\documentclass[10pt]{beamer}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{mathrsfs}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usefonttheme{serif} 
+\usepackage[document]{ragged2e}
+\usepackage[slide,algoruled,titlenumbered,vlined,noend,linesnumbered,]{algorithm2e}
+
+
+%\usetheme[]{Berkeley}
+\usetheme[]{Ilmenau}
+%\usetheme[]{Singapore}
+%\usetheme[]{Rochester}
+
+%\usecolortheme[]{seagull}
+\usecolortheme[]{beaver}
+\useinnertheme[]{circles}
+
+\definecolor{macouleur}{rgb}{0.20,0.43,0.09} % vert moyen
+
+\defbeamertemplate*{footline}{split}
+{%
+  \leavevmode%
+  \hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle%
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\makeatletter
+\newcommand\titlegraphicii[1]{\def\inserttitlegraphicii{#1}}
+\titlegraphicii{}
+\setbeamertemplate{title page}
+{
+  \vbox{}
+   {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\hfill\inserttitlegraphicii\par}
+  \begin{centering}
+    \begin{beamercolorbox}[sep=8pt,center]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%     
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}%\vskip0.5em
+    \begin{beamercolorbox}[sep=8pt,center]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+  \end{centering}
+  %\vfill
+}
+
+
+
+
+\makeatother
+\titlegraphic{\includegraphics[height=1.5cm,width=2cm]{ugb.jpg}}
+\title[Compte rendu]{Projet Cryptography $\grave{a}$ clef public}
+\institute{Universit\'{e} Gaston Berger \\UFR SAT\\ S\'{e}ction Math\'{e}matiques appliqu\'{e}es}
+\date{15 Mai 2021}
+
+\begin{document}
+\small
+\begin{frame}[plain]
+\maketitle
+\begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.33\textwidth}@{}}
+\underline{Membres :} & Seyni KANE \\
+& Ramatoulaye DIALLO
+
+
+\end{tabular}%
+\footnotesize
+
+\end{frame}
+
+{
+\renewcommand{\insertnavigation}[1]{}
+\setbeamertemplate{headline}{}
+
+\begin{frame}
+%\setbeamercolor{background canvas}{bg=transparent}
+\begin{center}
+\underline{\textbf{Table de matiere}}
+\end{center}
+
+\tableofcontents
+\end{frame}
+}
+
+
+\begin{frame}
+\section{Introduction}
+
+\begin{block}{Introduction}
+%on met ici lintroduction
+La cryptographie $\grave{a}$ clef public asym\'{e}trique est un domaine de la cryptography $\grave{o}$u il existe une distinction entre des donn\'{e}es \emph{public} et \emph{priv\'{e}es}.
+Le calcule de ces d'onn\'{e}es fait appel a des conceptes math\'{e}matiques plus pr\'{e}cisement aryth\'{e}metique tels que les conceptes de primalit\'{e}s, et aussi des conceptes algorithmiques.
+\\ Ici nous allons essayer de traiter les exercices qui sont proposer.
+ 
+\end{block}
+\end{frame}
+
+
+\begin{frame}
+\section{Exercice 6.1}
+%\begin{alertblock}{Theoreme}
+\emph{\underline{Exercice 6.1:} Factorisation d'un module RSA}
+\\Soit $n = p*q \in \mathbb{R}$, avec $p, q$ des nombres premiers.
+\\1) Determination de $p \text{ et } q$ connaissant $n = p*q$ et $\phi{(n)} = (p-1)*(q-1)$
+\\On a :
+\[
+\left\{
+\begin{array}{r c l}
+ n = p*q\\
+ \phi{(n)} = (p-1)*(q-1)
+\end{array}
+\right.
+\]
+Donc 
+\[
+\left\{
+\begin{array}{r c l}
+ n = p*q\\
+ \phi{(n)} = p*q -p -q +1
+\end{array}
+\right.
+\]
+Donc
+\[
+\left\{
+\begin{array}{r c l}
+ n = p*q\\
+ \phi{(n)} = p*q -(p + q) +1
+\end{array}
+\right.
+\]
+Ce qui nous donne
+\[
+\left\{
+\begin{array}{r c l}
+ n = p*q\\
+ p + q = n- \phi{(n)} +1
+\end{array}
+\right.
+\]
+Posons $S = p + q$ et $P = p*q$
+\\Connaissat $n \text{ et } \phi{(n)}$ la resolution de l'\'{e}quation $X\up{2} -SX +P = 0$, nous permet de rerouver $p \text{ et } q$.
+\\D'ou le resultat.
+					
+%\end{alertblock}
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+\section{Exercice 6.2}
+%\begin{block}{Preuve}
+
+\emph{\underline{Exercice 6.2:} Ensemble reconnaissable, echantillonable de maniere efficace}
+\\Soient $p \text{ et } q$ deux nombre premiers superieurs $\grave{a}$ 2 tels que $p| q-1$. Soit $G = <g>$ un sous-groupe de $\mathbb{Z\up{*}}_{p}$ d'orde $p$.
+\\1)Montrons que $G$ est reconnaissable de maniere efficace.
+\\Il suffit de trouver un algorithme efficace $\mathcal{A}$ qui etant donn\'{e}e $x \in \mathbb{Z\up{*}}_{p}$ nous renvoie $1 \text{ si } x \in G \text{ et } 0 \text{ sinon}$.
+\\Soit l'algorithme  $\mathcal{A}$ d\'{e}fini comme suit:
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}
+\SetKwInOut{Output}{output}
+\SetKw{KwB}{break}
+\SetKw{KwH}{halt}
+\DontPrintSemicolon
+\caption{L'algorithme $\mathcal{A}$}
+\Input{$g, p, x \in \mathbb{Z\up{*}}_{p}$}
+\Output{$0 \text{ ou } 1$}
+\BlankLine
+$x \gets _{R} \mathbb{Z\up{*}}_{p};$\\
+\For{$i = 0$ \KwTo $p-1$}{
+  \lIf{$x == g\up{i}$}{\Return$1$;}
+}
+\Return $0$
+\end{algorithm}
+
+Ainsi , on constate que l'algorithme $\mathcal{A}$ definie ci-dessus test de mani\'{e}re \'{e}fficace si un element $x \in \mathbb{Z\up{*}}_{p}$ appartient a ou non a $G = <g>$ d'ou $G$ est reconnaissable de maniere efficace.
+\\D'ou le resultat.
+
+%\end{block}
+\end{frame}
+
+
+\begin{frame}
+%\begin{block}{Preuve}
+
+2)Montrons que $G$ est echantillonable de mani\'{e}re \'{e}fficace 
+\\Pour ce la il suffit de trouver un algorithme \'{e}fficace $\mathcal{B}$ qui renvoie $x \in G$, tels que $x$ soit uniformement distribu\'{e}e sur $G$. 
+\\Soit l'algorithme  $\mathcal{B}$ d\'{e}fini comme suit:
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}
+\SetKwInOut{Output}{output}
+\SetKw{KwB}{break}
+\SetKw{KwH}{halt}
+\DontPrintSemicolon
+\caption{L'algorithme $\mathcal{B}$}
+%\Input{$g, p, x \in \mathbb{Z\up{*}}_{p}$}
+\Output{$x \in G$}
+\BlankLine
+$x \gets _{R} G;$\\
+\Return $x;$
+\end{algorithm}
+
+L'algorithme $\mathcal{B}$ definie ci-dessus tire un \'{e}lement de $G$ de mani\'{e}re uniform\'{e}ment al\'{e}atoire, de mani\'{e}re \'{e}fficace d'ou $G$ est \'{e}chantillonable de maniere efficace.
+\\D'ou le resultat.
+
+%\end{block}
+\end{frame}
+
+
+\begin{frame}
+%\begin{block}{Preuve}
+
+3)Montrons que si $G'$ est un groupe d'ordre $p$ telque :
+\\-$G'$ est reconnaissable de mani\'{e}re \'{e}fficace. C'est a dire il existe un algorithme efficace $\mathcal{A}$ qui \'{e}tant donn\'{e}e $x \in \mathbb{Z\up{*}}_{p}$ nous renvoie $1 \text{ si } x \in G \text{ et } 0 \text{ sinon}$.
+\\-Il existe un algorithme efficace $\mathcal{B}$ qui \'{e}tant donn\'{e}e $(a, b) \in G'\up{2}$ renvoie $a.b$.
+\\Alors $G'$ est \'{e}chantillonnable de mani\'{e}re \'{e}fficace 
+\\Pour ce la il suffit de trouver un algorithme \'{e}fficace $\mathcal{C}$ qui renvoie $x \in G'$, tels que $x$ soit uniformement distribu\'{e}e sur $G'$. 
+\\Soit l'algorithme  $\mathcal{C}$ d\'{e}fini comme suit:
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}
+\SetKwInOut{Output}{output}
+\SetKw{KwB}{break}
+\SetKw{KwH}{halt}
+\DontPrintSemicolon
+\caption{L'algorithme $\mathcal{C}$}
+\Input{$a \in G'$}
+\Output{$x \in G'$}
+\BlankLine
+$b \gets _{R} \mathbb{Z\up{*}}_{p};$\\
+\While{$\mathcal{A}(b) \neq 1$}{$b \gets _{R} \mathbb{Z\up{*}}_{p};$}\
+$x \gets \mathcal{B}(a,b);$\\
+\Return $x;$
+\end{algorithm}
+
+
+
+
+%\end{block}
+\end{frame}
+
+
+\begin{frame}
+
+L'algorithme $\mathcal{C}$ definie ci-dessus retourne un \'{e}lement de $G'$ tir\'{e} de mani\'{e}re uniform\'{e}ment al\'{e}atoire, de mani\'{e}re \'{e}fficace, car vue que $G'$ est un groupe, donc on a $\forall (a, b) \in G'\up{2}$ ,$a.b \in G'$.
+Et comme que $b$ est tir\'{e} de mani\'{e}re uniform\'{e}ment al\'{e}atoire dans $G'$, $a.b$ aussi est tir\'{e} de mani\'{e}re uniform\'{e}ment al\'{e}atoire dans $G'$. De plus on a $\mathcal{A}$ et $\mathcal{B}$ des algorithmes efficaces, alors notre algorithme $\mathcal{C}$ est effice.
+\\D'ou $G'$ est \'{e}chantillonable de maniere efficace.
+\\D'ou le resultat.
+
+\end{frame}
+
+
+\begin{frame}
+
+\section{Exercice 6.4}
+%\begin{block}{Preuve}
+
+\emph{\underline{Exercice 6.2:} Nombre de Carmichael}
+
+Un entier n impair est dit Carmichael s'il est:
+\\i)sans facteur carr\'{e}
+\\ii)si $p_{i}$ est un $d$ ses facteurs premier, ona $(p_{i}-1)|(n-1)$ 
+\\1)Montrons que si $n$ est un nombre de Carmichael pour tout $b$ appartenant $\grave{a} \quad \mathbb{Z}, b\up{n} \equiv b (mod n)$.
+Soit $p$ un des entiers de la d\'{e}composition de $n$ en facteur premier
+-Si $p \nmid n$ d'apres le theor\'{e}me de Fermat $b\up{phi(p)} \equiv 1 (mod n) \Rightarrow b\up{p-1} \equiv 1 (mod p)$ 
+\\or on a 
+\\$(p-1)|(n-1) \Rightarrow$ il $\exists k \in \mathbb{Z} / (n-1) = k(p-1) donc b\up{n-1} \equiv b\up{k(p-1)} (mod p) \equiv 1 (mod p)$ (*)
+\\En multipliant (*) par $b$, on obtient
+\\$b\up{n-1} \equiv b (mod p)$(1)
+-Si $p|n$, alors $b\up{p-1} \equiv 0 (mod p) \Rightarrow b\up{n-1} \equiv 0 (mod p)$
+\\(1) et (2) $\Rightarrow \forall p$ de la d\'{e}composition de $n$ en produit de facteur premier 
+\\on a $b\up{n} \equiv b (mod p)$ or $\mathbb{Z}_{n} =\mathbb{Z}_{p_1}\mathbb{Z}_{p_2}* ...\mathbb{Z}_{p_{k}}$, avec $n = p_{1}*p_{2}*...p_{k}$, $p_{i}$ premier $\forall i=1,...,k$.
+\\Donc $b\up{n} \equiv (b mod n)$
+\\D'ou pour tout $b \in \mathbb{Z}, b\up{n} \equiv (b mod n)$.
+2)Montrons que tout nombre de Carmichael $n$ s'ecrit sous la forme  $p_{1}*p_{2}*...p_{k}$, o\'{u} les $p_{i}$ distincts, $k>=3$ et $(p_{i}-1)|(n-1)$ pour tout $i=1,...,k$
+
+
+
+\end{frame}
+
+
+\begin{frame}
+%\begin{block}{Preuve}
+Supposons par absurde il existe $k<3$ tel que $n$ soit un nombre de Carmichael et $n = p_{1}*p_{2}$ avec les $p_{i}$ distincts  pour tout $i=1,2$
+-Pour $k = 1, n = p_{1}$ n'est pas un nombre de Carmichael
+-Pour $k = 2,n = p_{1}*p_{2}$
+\\Puisque $p1$ et $p2$ sont distinct alors ona :$p_{1}<p_{2}$ o\'{u} $p_{2}<p_{1}$
+On prend $p2<p1$
+ona $(p_{1}-1)|(n-1) \text{or} n-1 = p_{1}*p_{2} - 1 + p_{1} - p_{1} = p_{1}(p_{2}-1) + p_{1} - 1$
+\\Donc $(p_{1}-1)|(n-1) \Rightarrow (p_{1}-1)|p_{1}(p_{2}-1) + p_{1} - 1 \text{or} pgcd(p_{1}-1,p_{1}) = 1$
+\\d'o\'{u} $(p_{1}-1)|(p_{2}-1) \Rightarrow p_{1}-1 < p_{2}-1 \Rightarrow p_{1} < p_{2}$ ce qui est absurde.
+d'o\'{u} tout nombre de Carmichael s'ecrit sous la forme $p_{1}*p_{2}*...p_{k}$, o\'{u} les $p_{i}$ distincts, $k>=3$ et $(p_{i}-1)|(n-1)$ pour tout $i=1,...,k$, o\'{u} les $p_{i}$ distincts, $k>=3$ et $(p_{i}-1)|(n-1)$ pour tout $i=1,...,k$.
+3)Le test de Fermat  ne saurait etre utilis\'{e} comme test de primalit\'{e} .En effet,pour le test de Fermat l'algorithme teste si un nombre 
+donne\'{e} en entr\'{e}  s'il est \emph{"composite"} ou \emph{"peut etre premier"}
+\\On a si $n$ est un nombre premier, 
+\\alors pour tout $\alpha \in \mathbb{Z}_{n}\up{*} \quad pgcd(\alpha,n) = 1 \Rightarrow \alpha\up{phi(n)} \equiv 1 (mod n)$
+\\$ \Rightarrow \alpha\up{(n-1)} \equiv 1 (mod n)$
+\\or si $\beta = alphat\up{(n-1)} \neq 1 \Rightarrow n$ n\'{e}nt pas premier sinon, 
+le test revoie peut \'{e}tre premier, 
+\\or si $n$ est un nombre de Carmichael, on pour tout $b \in \mathbb{Z} , b\up{(n-1)} \equiv 1 (mod n)$
+\\Donc d'apres le test $n$ peut etre prenmier,or il exist $p_{1},p_{2},...,p_{k},k>=3$ pour tout $i=1,...,k$,telque:
+
+
+%\end{block}
+\end{frame}
+
+
+\begin{frame}
+
+$n = p_{1}*p_{2}*...p_{k} \Rightarrow \forall i=1,...,k \quad p_{i}|n$ donc $n$ ne peut pas etre premier et etant donn\'{e}e que les nombres de Carmichael sont infinis.
+\\Alors le test de Fermat ne saurait etre utilis\'{e} comme test de primalit\'{e}.
+
+4)Modifions l'alorithmede maniere \'{a}	renvoyer une preuve de non primalit\'{e} de $n$ verifiable en temps polynomiale.
+On sait que s'il existe alpha dans $\mathbb{Z}_{n}\up{*} / \alpha\up{(n-1)} \neq 1$, on peut affirmer avec certitude que $n$ n'est pas premier.
+soit l'algorithme suivant:
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}
+\SetKwInOut{Output}{output}
+\SetKw{KwB}{break}
+\SetKw{KwH}{halt}
+\DontPrintSemicolon
+\caption{L'algorithme $\mathcal{A}$}
+\Input{$n, k$}
+\Output{$0 \text{ ou } 1$}
+\BlankLine
+\For{$i = 0$ \KwTo $k-1$}{
+  $\alpha \gets _{R} \mathbb{Z\up{*}}_{n};$
+  $\beta = \alpha\up{(n-1)}$\\
+  \lIf{$\beta \neq 0$}{\Return$\alpha$;}
+}
+\Return $\alpha = 0$
+\end{algorithm}
+
+	
+Sortie: $\alpha$
+\[
+\left\{
+\begin{array}{r c l}
+ \text{ si } \alpha \neq 0 \text{ alors } \alpha \text{est un certificat de non primalit\'{e}}\\
+ \textbf{Sinon aucun certificat de non primalt\'{e}}
+\end{array}
+\right.
+\]
+\end{frame}
+
+
+
+\begin{frame}
+\section{Exercice 6.5}
+
+\emph{\underline{Exercice 6.5:} Test de primalit\'{e}}
+\\Soit  n  $\in   \mathbb{N}^{*}\setminus2 \mathbb{N}$. On note
+$ \mathbb{Z}_n \setminus \{0\}$  par  $\mathbb{Z}_n^{+}$ et on d\'efinit :
+\\$ l_n = \{ \alpha \in \mathbb{Z}_n^{+} , \alpha^{n-1} = 1\}$
+\\1. Montrons que $l_n \subseteq  \mathbb{Z}_n^{*}.$
+\parindent=1,4cm
+\\soit $ \in l_n \Longrightarrow \alpha_n^{n-1} = 1$
+
+$\Longrightarrow \alpha = 1 \mbox{ mod } n$.
+\parindent=0cm
+\\D'apr\`es le th\'eor\`eme de Fermet $\alpha \wedge n =1$
+\parindent=2,1cm
+on a $\alpha \: \wedge = 1 \Leftrightarrow \bar{\alpha}$est un g\'enerateur de
+$(\mathbb{Z}/ \mathbb{Z}_n)$
+
+$\Leftrightarrow \bar{\alpha}$ est un \'element inversible de
+\parindent=3cm
+
+l'anneau ($\mathbb{Z}_n,+,.$ ).
+\\D'o\`u $ \bar{\alpha} \in (\mathbb{Z}/\mathbb{Z}_n)^*$.
+\parindent=0cm
+\\Par cons\'equent $l_n \subseteq \mathbb{Z}_n.  $\quad(1)
+
+2. Montrons que si $n$ est premier alors $L_n = \mathbb{Z}_n^{*}$
+
+$n$ est premier $\Longrightarrow \mathbb{Z}_n^{*}$ est cyclique d'ordre
+$\varphi(n)= n-1$ 
+\\ \parindent= 2,2cm
+$ \Longrightarrow \forall x \in x_n^* , \quad x_n^{n-1} = 1$
+
+$ \Longrightarrow \forall x \in x_n^* , \quad x \in l_n$
+
+$ \Longrightarrow  x_n \subseteq l_n  $ \quad(2)
+ (1) et (2) si n est premier alors $ L_n = \mathbb{Z}_n^*$
+ \\ \parindent=0cm
+3. Montrons que si n est composite et si $ L_n \subsetneq \mathbb{Z}_n^*$ , alors
+
+$\vert L_n \vert \leq (n-1)/2$
+
+Soit $\psi : \mathbb{Z}_n^* \longrightarrow\mathbb{Z}_n^* $
+\\ \parindent=1,6cm
+
+$x\longmapsto \quad x^{n-1}$
+
+
+\end{frame}
+
+
+\begin{frame}
+
+\parindent=0cm
+i)$ \psi$ est un morphisme. En effet $ \forall x,y \in \mathbb{Z}_n^*$\\
+$ \psi (xy)= \quad xy^{n-1} \quad = \quad x^{n-1}y^{n-1}= \quad\psi(x)\psi(y)$\\
+On a $L_n = ker\psi$. \quad En effet $L_n \subset ker\psi$ et $ker\psi \subset L_n $ par d\'efinition. D'o\'u le r\'esultat\\
+Or $L_n = ker\psi \subset \mathbb{Z}_n^* $\\
+$\Longrightarrow \mid L_n \mid$ \Huge{$\mid$} \normalsize {$\mid\mathbb{Z}_n\mid$} et $l_n$ n'est pas un sous-groupe trivial de $\mathbb{Z}_n^*$
+D'o\'u $\frac{\mid\mathbb{Z}_n^*\mid}{\mid L_n \mid}\geq 2$ $ \Longrightarrow \quad \mid l_n \mid \leq \quad \frac{1}{2} \mid \mathbb{Z}_n^*\mid$\\
+
+$\Longrightarrow \mid L_n \leq \frac{1}{2} \psi(n)$\\
+or n est un composite donc $\psi(n)\leq n-1$\\
+d'o\'u $\mid L_n \mid \leq \frac{1}{2} (n-1)$\\
+ \parindent = 0cm
+
+4. Montrons que pour tout nombre Carmichael n $l_n = \mathbb{Z}_n^*$\\
+
+$\rightarrow$ D'apr\`es la question 1 $L_n \subseteq \mathbb{Z}_n^* \forall n \in \mathbb{N}^{*}/2\mathbb{N}$ \hfill(*)\\
+$\rightarrow$ on a n est un nombre de Carmichael donc\\
+\parindent = 0,3cm
+
+$\exists P_1,...,P_k$ avec $P_i$ premier $ i \in
+\{1,...,k\}$\\
+Soit x $\in \mathbb{Z}_n^*$, montrons que x $ \in L_n$ ie $x^{n-1}=1$\\
+On a $ \mathbb{Z}_n^* \cong \mathbb{Z}_{{p}_{1}}^{*} \quad *\mathbb{Z}_{{p}_{2}}^{*} * \quad ... *\quad \mathbb{Z}_{{p}_{1}}^{*}$\\
+
+Soit $\varphi \quad \mathbb{Z}_n^* \longrightarrow \quad \mathbb{Z}_{{p}_{1}}^{*} \quad *\mathbb{Z}_{{P}_{2}}^{*} * \quad ... *\quad \mathbb{Z}_{{P}_{1}}^{*}$ \\
+\parindent =1,5cm
+
+\end{frame}
+
+\begin{frame}
+
+x \quad $ \mapsto \quad (x_1,...,x_k)$\\
+ un isomorphisme de $\mathbb{Z}_n^* \quad dans \quad \mathbb{Z}_{{P}_{1}}^{*} \quad *\mathbb{Z}_{{P}_{2}}^{*} * \quad ... *\quad \mathbb{Z}_{{P}_{1}}^{*}$ \\
+
+soit x $ \in  \mathbb{Z}_n^*$, alors $ \forall \quad i \in \{1,...,k\}, \quad x_i \in \quad \mathbb{Z}_{{P}_{i}}^{*}$\\
+
+$\Longrightarrow x_i^{P_{i-1}} =1 $, $ \forall i \in \{1,...,k\}$\\
+
+$\Longrightarrow x_i^{P_{i-1}} =1 $, $ \forall i \in \{1,...,k\}$ car $ P{i-1} \Huge{\mid} (n-1),\quad \forall i \in \{1,...,k\}$\\
+Donc $ for x \in \mathbb{Z}_n^* \quad (\varphi(x))^{n-1} \quad =\quad (x_1^{n-1},x_2^{n-1},...,x_k^{n-1})$
+
+
+%%%%%%%%%%%%%%55
+$ =(1,1,...1)$
+$\Longrightarrow x \in \mathbb{Z}_n^*$, $ x^{n-1}=1$\\
+$\Longrightarrow x \in \mathbb{Z}_n^*$, $ x \in L_n$
+$\Longrightarrow \mathbb{Z}_n^* \subseteq L_n$ \hfill(**)\\
+
+D'apr\`es (*) et (**) sin n est un nombre Carmichael alors
+
+$L_n = \mathbb{Z}_n^*$\\
+
+5. On pose $ n-1 = t_2$  avec $t_2$ et on d\'efinit
+
+$$
+l^{'}_n  =  \{ \alpha \in
+\mathbb{Z}_n^* :  \alpha^{n-1}  = 1 \quad \forall j \in \{0,...,k-1\}, \alpha^{t_2}{^{j+1}}=1,\quad \alpha^{t_2}{^{j}}= \pm 1  \}
+$$\\
+
+a. Montrons que si n est premier impair alors $ L^{'}_n = \mathbb{Z}_n^*$
+
+On a comme n est premier impair alors $\mathbb{Z}_n^{*} \varphi(n) = n-1$\\
+Donc $\forall x \in \mathbb{Z}_n^*$, $ x^{n-1}=1$\\
+Supposons $ x^{t_2}{^{j+1}}=1$ montrons $ x^{t_2}{^{j}}= \pm 1 $\\
+on a $t2^{j+1}= t2^{j} *2$\\
+$ x^{t2^{j+1}}= 1 \Longrightarrow  x^{t2^{j}*2}=1$\\
+\parindent =1,6cm
+
+\end{frame}
+
+
+
+\begin{frame}
+
+$\Longrightarrow   x^{(t2^{j})2}=1$\\
+Posons $\beta = x^{2^{j}t}$, on a $\beta^2 =1$\\
+$\Longrightarrow \beta^2-1=0 \quad \Longrightarrow \beta = \pm 1$\\
+$\Longrightarrow x \in L^{'}_n$\\
+$\Longrightarrow \mathbb{Z}_n^* \subset L^{'}_n$ en plus $L^{'}_n \subset \mathbb{Z}_n^*$\\
+
+Si n est premier impair alors $ L^{'}_n = \mathbb{Z}_n^*$\\
+
+b. On suppose que $n=p^e$ avec p premier et $e>1$\\
+
+Soit l'endomorphisme de $ \mathbb{Z}_n^*$  d\'efinit par \\
+
+$f(x)= x^(n-1)$\\
+
+i)Montrons que $L^{'}_n \subset kerf $\\
+
+Soit  x $ \in L^{'}_n \Longrightarrow x^{n-1}=1$ \quad (1)\\
+ $ kerf = \{ x \in \mathbb{Z}_n^{*} \quad : x^{n-1}=1\}$\\
+ On a x $ \in L^{'}_n \Longrightarrow\quad : x^{n-1}=1\Longrightarrow\quad xx^{n-2}=1$\\
+ Posons $x^{'}=x^{n-2}\quad \Longrightarrow\quad x^{'}x=1$\\
+ D'o\`u $x \in \mathbb{Z}_n^{*} \quad (2)$\\
+ 
+ (1)et (2) $\Longrightarrow \quad x\in kerf$ \\
+ 
+ D'o\`u $L^{'}_n \subset kerf $\\
+ 
+%%%%%%%%%%%%%%%%%55
+On a $ kerf = \{ x \in \mathbb{Z}_n^{*} \quad : x^{n-1}=1\}$  avec
+
+ f : $ \mathbb{Z}_n^{*} \longrightarrow \mathbb{Z}_n^{*}$\\
+
+ x$\longmapsto x^{n-1}$\\
+ Posons $n= p^e$, $ \mathbb{Z}_n^{*}$ est cyclique d'ordre $\varphi(n)$\\
+
+
+\end{frame}
+
+\begin{frame}
+
+$ \Longrightarrow$ il est isomorphe \`a $\mathbb{Z}_{\varphi(n)}$.\\
+
+soit $ \theta : \mathbb{Z}_n^{*}\quad \longrightarrow \mathbb{Z}_{\varphi(n)}$\\
+\parindent=1,7cm
+
+$x \longmapsto \theta(x)=yx$\\
+
+\parindent=0cm
+
+$(n-1)yx=O_{\mathbb{Z}_{\varphi(n)}}$ \quad (*)\\
+le nombre de solution (*) est le $pgcd(n-1,\varphi(n))$\\
+Donc $ \mid kerf\mid = pgcd (n-1,\varphi(n)) $\\
+
+= $pgcd (p^{e}-1,p^{e-1}(1-\frac{1}{p})$\\\parindent=0cm
+
+5-b  ii) $ \mid kerf\mid = p-1=\frac{p^{e}}{p^{e}+...+1}$\\
+
+= $ \frac{n-1}{\beta} $ avec $\beta \geq4$\\
+
+D'o\`u $  \mid kerf\mid \leq\frac{n-1}{4}$\\
+or $l^{'}_n \subset kerf \Longrightarrow \mid l^{'}_n\mid \leq   \mid kerf\mid$ \\ 
+
+$ \Longrightarrow \mid l^{'}_n\mid \leq \dfrac{n-1}{4}$\\
+
+5.c) i) montrons que pour tout $ x\in L^{'}_n, \quad \alpha^{t2^{g}} =1$
+Si $ x\in L^{'}_n$ alors $ \alpha\in \mathbb{Z}_n^{*}$\\
+
+$ \varphi(\alpha)= (\alpha_1,..,\alpha_r)$\\
+
+$\varphi(\alpha^{t2^{g}})\quad= \quad (\alpha_{1}^{t2^{g}},...,\alpha_{r}^{t2^{g}} ) $\\
+
+Supposons par l'absurde qu'il existe $\alpha \in L^{'}_n \neq 1$\\
+On a n\'ecessairement $g \neq h \quad car\quad si\quad g=h \quad$ on a \\
+$t2^{g}=t2^{h}= n-1$, or par d\'efaut
+$L^{'}_n$, $\forall \alpha \in L^{'}_n \quad n^{n-1}=1$\\
+
+
+\end{frame}
+
+\begin{frame}
+
+Puisque $g = min \{h_1,h_1,...,h_1\}, g=h$ pour un certain i \\
+Soit j le plus petit entier tel que $\alpha^{t2^{j}}=1$ on a $\alpha^{t2^{j-1}}\neq1 $\\
+Par ailleurs $j-1 \geq g=h_i$\\
+Ainsi $ \alpha^{t2^{j}}=1 \quad et \quad \alpha^{t2^{j-1}}\neq1  $. On en d\'eduit que $2^{j} \Huge | ord(\alpha_{i}^t) $  \quad (*)\\
+
+Si $ \alpha_{i}^t)$ appartient \`a un groupe cyclique d'ordre $t_{i}2^{h_i} \quad avec \quad t_i \quad impair$\\
+
+(*) $ \Longrightarrow 2^{i} | 2^{h_i}$ absurde car $j-1 \geq h_i$. Donc $\forall n \quad \alpha \in L^{'}_n,\quad \alpha^{t2^{g}} =1 .$\\
+
+iia\underline{ Montrons que si $ \alpha \in L^{'}_n \quad alors \quad \alpha^{t2^{g-1}} \neq 1$}\\
+
+soit  $ \alpha \in L^{'}_n \Longrightarrow \forall j \in \{i,...,h_{i}\} \alpha^{t2^{j+1}}=1 \quad \Longrightarrow \quad \alpha^{t2^{j}} = \pm 1$ et on a: $\forall \alpha  \in L^{'}_n,\alpha^{t2^{g}}=1 h\geq g =1 g-1 \in \{0,...,h\}$\\
+Donc $\alpha^{t2^{g-1}+1} =1 \quad \Longrightarrow \alpha^{t2^{g-1}}= \pm1$\\
+
+iii) D\'eduisons en que $\mid L^{'}_n\mid  \leq 2\quad \mid ker f_{g-1}\mid$\\
+
+$ f_{g-1} : \quad c \longrightarrow \quad \mathbb{Z}_n^*$\\
+%\parindent = 1,5cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+$ \alpha \longmapsto \quad \alpha^{t2^g}$\\
+
+$ker f_{g-1} = \{\alpha \in \mathbb{Z}_n^* \quad : f_{g-1}(\alpha)=1\}$\\
+
+$=\{\alpha \in \mathbb{Z}_n^* \quad :\alpha^{t2^{g-1}} =1\} $\\
+
+On a $\alpha^{t2^{g-1}} =1$\\
+si $ \alpha \in L^{'}_n \alpha^{t2^{g-1}} =\pm1$\\
+$\Longrightarrow L^{'}_n \subseteq \{\alpha \in \mathbb{Z}_n^* \quad :\alpha^{t2^{g-1}} =\pm1\}$\\
+On a $ f_{g-1}= \alpha^{t2^{g-1}} =\pm1$\\ \parindent = 0,8cm
+
+
+\end{frame}
+
+
+\begin{frame}
+
+$\Longrightarrow L^{'}_n \subseteq f_{g-1}^{-1}(\{-1\})\cup f_{g-1}^{-1}(\{1\})$\\
+
+$ \Longrightarrow |L^{'}_n| \leq |f_{g-1}^{-1}(\{-1\})|+ |f_{g-1}^{-1}(\{1\})|$
+
+or  $|f_{g-1}^{-1}(\{-1\})|= keerf_{g-1} \quad et \quad |f_{g-1}^{-1}(\{1\})| =kerf_{g-1}$\\
+
+Donc $|L^{'}_n | \leq 2|kerf_{g-1}|$\\
+
+iii.c)\underline{ Montrons que $|kerf_j| ={\displaystyle\prod_{i=1}^r pgcd(t_{i}2^{h_{i}}, t2^j)}$}\\
+
+$$
+f(\alpha)=1
+f(\alpha_i)=1 \qquad \forall i \in \{1...r\}
+\{ \alpha_{i} \in \mathbb{Z}_p  \alpha^{t^{2^{j}}}=1\} = pgcd(t_{i}2^{h_{i}}, t2^j)
+$$\\
+donc $ \{\alpha \in \mathbb{Z}_n^* \quad f_{g}(\alpha)=1 \}$
+\\ \parindent = 1cm
+
+%%%%%%%%%%%%%%%%%%555
+$ = {\displaystyle\prod_{i=1}^r | \{\alpha_i \in \mathbb{Z}_{pi}^{e^{*}i} , \alpha ^{t2^{j}}=1\}}$\\
+$= {\displaystyle\prod_{i=1}^r pgcd(t_{i}2^{h_{i}}, t2^j)}$\\
+
+
+iii.d)\underline{ Montrons que $ 2^r|ker f_{g-1}\mid = \mid ker f_g\mid \leq |kerf_r|$}\\
+
+ $g = min \{ h_1,...h_r\} \Longrightarrow g\leq h$\\
+
+$ ker f_g = \{ \alpha \in \mathbb{Z}_n^* : f_g (\alpha) =1 \}$\\ \parindent = 1cm
+
+$ = \{ \alpha \in \mathbb{Z}_n^* : \alpha^{t2^g}=1 \}$\\
+
+$ = \{ \alpha \in \mathbb{Z}_n^* :\alpha^{t2^h}=1 \}$\\
+
+
+
+\end{frame}
+
+
+\begin{frame}
+
+Si $ h=g $ alors $ f_g = f_h \Longrightarrow |kerf_g| = |kerf_h|$\\
+Sinon si $h >g$ alors $h = g*u$ avec u $\in \mathbb{N}$\\
+Ainsi $ \forall a \in kerf_g , f_h(\alpha) = \alpha^{t2^{gu}}= (\alpha^{t2^{g}})^{2u} = 1^{2u}$\\
+donc $\forall \alpha  \in kerf_g \subset, kerf_h$ d'o\`u $ |kerf_g| \leq |kerf_h|$\\
+Ce qui montre $|l^{'}_n|\leq 2^{r+1}|kerf_h|$
+
+
+$|l^{'}_n|\leq 2|kerf_{g-1}|$\\
+
+$|kerf_{g-1}| \leq |kerf_h| avec |kerf_g| =  2^r|kerf_{g-1}|$\\
+
+$ 2^r|kerf_{g-1}| \leq |kerf_h| \quad (a)$ \\
+or $|L^{'}_n \leq 2 |kerf_{g-1}| \quad (b)$\\
+
+$|kerf_{g-1} \leq 2^r |kerf_h|$\\
+$2|kerf_{g-1} \leq 2^{1-r} |ker f_h|$\\
+
+$\boxed{|l^{'}_n|\leq 2|kerf_{g-1}| \leq  2^{1-r} |kerf_h|}$\\
+
+iii.e)\underline{ Montrons que si $r\geq 3$ alors $|l^{'}_n|\neq |\mathbb{Z}_n^*|/4 \neq (n-1)/4$ }\\
+On a $ |l^{'}_n|\leq  2^{1-r} |kerf_h|$\\
+
+$r \geq 3 \Longrightarrow  |l^{'}_n|\leq  2^{1-3} |kerf_h|$ \\ \parindent = 1cm
+
+$\Longrightarrow |l^{'}_n|\leq \dfrac{|kerf_h|}{4} or kerf_h \subseteq \mathbb{Z}_n^*$\\
+
+$\Longrightarrow |l^{'}_n|\leq \dfrac{|\mathbb{Z}_n^*|}{4}$
+
+
+\end{frame}
+
+
+\begin{frame}
+
+6) \underline{Montrons que l'algorithme teste la validit\'e de l'assertion
+$\alpha \in \mathbb{Z}_n^* $}\\
+$\longrightarrow Si \beta = \alpha^j =1 \quad \forall \in \{{0,...h-1}\}$
+on a $ \alpha^{t2^{j+1}} =  (\alpha^t)^{2^{j+1}} = 1 \qquad \alpha \in  L^{'}_n$\\ \parindent = 1cm
+$\alpha^{t2^{j}} = (\alpha^t)^{2^{j}} l = 1 \qquad \alpha \in  L^{'}_n$\\
+$\Longrightarrow$ Si l'algorithme s'arr\^ete \'a la ligne 11  on a
+$\alpha \in  L^{'}_n$\\
+$ \Longrightarrow$ ai l'algorithme s'arr\^ete \'a la ligne 15, on a :\\
+$ \forall i_1 < i , \alpha^{t2^{i_1}} \neq pm$\\
+$ \alpha^{t2^i} = -1 et \alpha^{t2^{i+1}}= 1  \forall j$\\
+
+Il est v\'erifi\'e que \\
+$ \alpha^{n-1} = \alpha^{t2^{j}} = 1$\\
+$ \forall j \in \{ 0,...,h\} si \alpha^{t{_i}2^{j+1}}=1 alors \alpha^{t{_i}2^{j}}=\pm1 $ \qquad  $ \forall \alpha \in L^{'}n$\\
+$\Longrightarrow$  Si l'algorithme s'arr\^ete \`a la ligne 18 \\
+on a $ \forall i_2 \subset i, \alpha^{t2^{i+1}}\neq \pm1, de plus \forall j$\\
+$ \alpha^{n-1} = \alpha^{t2^i} = 1$\\
+$ \forall j \in \{0,...,h-1\} si \alpha^{t2{j+1}} =1 alors \alpha ^{t2^{j}} = \pm 1$ \hfill $ \forall \alpha \in L^{'}_n$\\
+$\longrightarrow$ Si l'algorithme s'arr\^ete \`a la ligne 22 \\
+On a $\forall i \leq h-1, \alpha ^{t2^{i}} \neq \pm 1 \Longrightarrow \alpha \in  L^{'}_n $\\
+\emph{\underline{Conclusion:}}
+l'analyse que nous venons de faire nous fait remarquer que l'algorithme revoie vrai uniquement lorsque $\alpha \in L^{'}_n$ et faux dans le cas contraire. Donc on peut affirmer que cette algorithme, pour un n donn\'e et un $\alpha \in  L^{'}_n$, teste efficacement la validit2 de l'insertion.\\
+
+
+\end{frame}
+
+
+\begin{frame}
+
+7) $\Longrightarrow$  si l'algorithme s'arr\^ete \`a la ligne 24\\
+On a n=2 qui est en effet un nombre premier\\
+$\Longrightarrow$ si l'algorithme s'arr\^ete \`a la ligne 27\\
+On a $n \neq 2 et 2/n$\\
+Donc $ n\neq 2 et n est paire $\\
+Or le seul nombre premier pair que l'on connait est 2\\
+Donc on peut affirmer avec certitude que n 'est pas premier \\
+$\Longrightarrow$  Si l'algorithme s'arr\^ete \`a la ligne 32\\
+On a $n\neq 2 et 2\nmid n donc n\neq 2 et n est imapair $ \`a la i\`eme it\'eration on a tir\'e un $\alpha \in \mathbb{Z}_n^{*} et \alpha \notin L^{'}_n$\\
+Ce qui implique que $\mathbb{Z}_n^{*} \neq L^{'}_n$ \\
+Si n est premier on a $ \mathbb{Z}_{*} = L^{'}_n$ \\
+Donc on peut affirm\'e avec certitude que n n'est pas premier.\\
+$ \Longrightarrow$ Si l'algorithme s'arr\^ete \`a la ligne 35\\
+On a $n\neq 2$ donc n impair. De plus on tire k fois de mani\`re uniformément  et al\'eatoire un \'el\'ement de $\alpha \in \mathbb{Z}_n^{*}$  et \`a chaque fois on a $\alpha \in L^{'}_n$, donc on peut affirmer avec une probabilit\'e d'erreur tr\`es faible que n est premier.\\
+
+\end{frame}
+
+
+\begin{frame}
+
+\emph{\underline{Conclusion:}}
+l\'analyse que l'on vient de faire, on peut dire que le test de Miller-Rabin teste la validit\'e de l'affirmation
+"n'est pas premier". En effet si n est premier , elle renvoie toujours vraie car si $ n=2$, elle renvoie vraie, et $n \neq 2$ et n premier, on ne pouvait pas trouver un $\alpha \in L^{'}_n$ tel que $ \alpha \notin L^{'}_n$ vu que $\mathbb{Z}_n^{n} =L^{'}_n $
+
+\end{frame}
+
+
+\begin{frame}
+\section{Exercice 6.6}
+
+\emph{\underline{Exercice 6.6:} Chiffrement RSA}
+\\1)Voire le script ci-joint. En effet nous avons pue generer une bi-cl\'{e}fs, et ajouter a cela nous avons mpl\'{e}menter la partie cryptage et decriptage RSA.
+\\2)Explication:On utilise le th\'{e}or\'{e}me des restes chinois pour optimiser le calcul.
+\\On notera $C$ le message chiffr\'{e} re\c{c}u et $M'$ le message d\'{e}chiffr\'{e} et celui-ci est calcul\'{e} de la fa\c{c}on suivante :
+
+$M' \equiv C\up{d} (mod n)$, ou $d$ est l'exposent priv\'{e} RSA et $n$ le module RSA.
+\\Ici nous avons not\'{e} le message dechiffr\'{e} par $M'$ et non $M$, pour mettre en exergue que nous n'avons pas encore d\'{e}montr\'{e} que l'on peut effectivement retrouver le message d'origine.
+\\Donc nous allons effectuer les calcules suivant:
+\\$M' \equiv C\up{d} (mod n)$
+\\En fonction du message original
+\\$M' \equiv M\up{ed} (mod n)$
+\\L'id\'{e}e est donc de montrer que $M'$ est congru a $M$ modulo $n$
+\\Comme on a choisit $d$ tel que le produit $ed \equiv 1 (mod \phi{(n)})$, il existe un entier $k \in \mathbb{Z}$ tel que $ed = k \phi{(n)} + 1$ . De plus , $n = pq$ avec $p \text{ et } q$ premiers, alors $\phi{(n)} = (p-1)(q-1)$ ; on peut alors ecrire:
+\\$M' \equiv M\up{k(p-1)(q-1)+1} (mod n)$
+
+
+\end{frame}
+
+
+
+\begin{frame}
+
+$M$,par construction, est un entier naturel strictement plus petit que le module $n$. $n = pq$, avec $p \text{ et } q $ premiers. Le raisonnement suivant est effectu\'{e} avec $p$, et doit \^{e}tre effectu\'{e} de mani\'{e}re sym\'{e}trique avec $q$:
+$M$ et $p$ sont premiers entre eux, alors d'apr\'{e}s le th\'{e}or\'{e}me de Fermat $M\up{(p-1)} \equiv 1 (mod n)$ , donc en \'{e}levant la puissance $k(q-1)$ et en multipliant par $M$, on obtient:
+\\$M\up{k(p-1)(q-1) +1} \equiv M (mod p)$ en raissonnant de man\'{e}re sym\'{e}trique pour $q$ : $M\up{k(p-1)(q-1) +1} \equiv M (mod q)$ 
+\\ En appliquant le \emph{th\'{e}or\'{e}eme des restes chinois} $p \text{ et } q $ premiers entre eux car premiers, et avec $n = pq$, il vient que 
+\\$M\up{k(p-1)(q-1) +1} \equiv M (mod n)$ 
+\\-Si $M$ et $p$ ne sont pas premier entre eux, alors $M$ est un multiple de $p$ alors $M \equiv 0 (mod p)$, et en \'{e}levant  $\grave{a}$ la puissance $k(p-1)(q-1) + 1$, $M\up{k(p-1)(q-1) +1} \equiv 0 (mod p) \equiv M (mod p)$
+\\En raissonnant de man\'{e}re sym\'{e}trique avec $q$ et en appliquant le \emph{th\'{e}or\'{e}me des restes chinois} on obtient : 
+\\$M\up{k(p-1)(q-1) +1} \equiv M (mod n)$ 
+\\On a donc bien 
+\\$M' \equiv M\up{k(p-1)(q-1)+1} (mod n)$. Comme on a pris $M$ inferieur $\grave{a} \quad n$, alors $M \equiv M (mod n)$.
+\\Donc le message dechiffr\'{e} est bien identique au message d'origine.
+
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}
+
+\section{Conclusion}
+\begin{block}{Conclusion}
+La realisation des execices ci-dessus de meme que l'\'{e}laboration de ce present documents, nous on \'{e}tait tr\'{e}s profitable en terme d'enseignement theorique et pratique avec les programme que l'on a joint au document. La chronologie des exercercice est tr\'{e}s pertinante, les conc\'{e}ptes developper ici sont la continuit\'{e} des conc\'{e}pte developper dans l'exercice precedant et ainsi de suite .
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+%\tiny
+\section{Sources et bibliographie}
+\subsection{Sources}
+\begin{block}{Sources}
+\url{https://fr.wikipedia.org/}
+\end{block}
+\subsection{Bibliographie}
+\begin{block}{Bibliographie}
+\begin{itemize}
+\item \emph{Codage, cryptologie et application \newline Par Bruno Martin}
+\item \emph{Rep\'{e}re-Comprendre RSA \newline nico34-buffer, 13 Avril 2013}
+
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\end{document}
